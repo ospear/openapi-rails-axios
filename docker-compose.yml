@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   api-mock:
     image: danielgtaylor/apisprout
@@ -7,6 +7,13 @@ services:
     volumes:
       - ./openapi/merged.yaml:/merged.yaml
     entrypoint: /usr/local/bin/apisprout /merged.yaml --watch
+  api-mock-prism:
+    image: stoplight/prism
+    ports:
+      - 8013:4010
+    volumes:
+      - ./openapi/merged.yaml:/app/openapi.yaml
+    command: mock -h 0.0.0.0 -d /app/openapi.yaml
   swagger-ui:
     image: swaggerapi/swagger-ui
     ports:
@@ -24,13 +31,13 @@ services:
     environment:
       SPEC_URL: merged.yaml
   redoc-cli:
-    build: ./docker/redoc-cli
+    build: ./redoc-cli
     volumes:
       - ./openapi:/data
   swagger-merger:
-    build: ./docker/swagger-merger
+    build: ./swagger-merger
     volumes:
-      - ./docker/swagger-merger/watch.js:/watch.js
+      - ./swagger-merger/watch.js:/watch.js
       - ./openapi:/data
     environment:
       NODE_PATH: /usr/local/lib/node_modules
