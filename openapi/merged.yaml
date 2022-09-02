@@ -53,13 +53,10 @@ paths:
       parameters:
         - name: status
           in: query
-          description: How many items to return at one time (max 100)
+          description: Pet status
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Pet/properties/status'
-            collectionFormat: multi
+            type: string
       responses:
         '200':
           description: A paged array of pets

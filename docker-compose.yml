@@ -22,6 +22,14 @@ services:
       - ./openapi/merged.yaml:/usr/share/nginx/html/merged.yaml
     environment:
       API_URL: merged.yaml
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    ports:
+      - "8015:8080"
+    volumes:
+      - ./openapi:/app
+    environment:
+      SWAGGER_FILE: /app/merged.yaml
   redoc:
     image: redocly/redoc
     ports:
@@ -42,3 +50,7 @@ services:
     environment:
       NODE_PATH: /usr/local/lib/node_modules
     entrypoint: node /watch
+  generator:
+    image: openapitools/openapi-generator-cli
+    volumes:
+      - ./:/local
